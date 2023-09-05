@@ -17,9 +17,9 @@ public class NumberCodeController {
     public ResponseResult numberCode(@PathVariable("size") Integer size){
 		
 		// 自定义生成随机数
-		double result = (Math.random() * 9 + 1) * Math.pow(10, size - 1);
-		
-		return ResponseResult.success((int) result);
+		int result = (int) ((Math.random() * 9 + 1) * Math.pow(10, size - 1));
+		System.out.println("本次生成验证码: " + result);
+		return ResponseResult.success(result);
     }
 	
 }

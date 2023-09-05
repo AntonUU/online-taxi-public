@@ -1,5 +1,6 @@
 package cn.anton.apipassenger.controller;
 
+import cn.anton.apipassenger.feign.ServiceVerificationcodeCilent;
 import cn.anton.apipassenger.request.VerificationCodeDTO;
 import cn.anton.apipassenger.service.VerificationCodeService;
 import cn.anton.apipassenger.service.impl.VerificationCodeServiceImpl;
@@ -22,9 +23,13 @@ public class VerificationCodeController {
     
     @GetMapping("/verification-code")
     public ResponseResult verificationCode(@RequestBody VerificationCodeDTO dto){
-        String passengerPhone = dto.getPassengerPhone();
-        System.out.println("接收到的验证码：" + passengerPhone);
-        String result = vcService.generateCode(passengerPhone);
+        // 验证手机号
+        
+        // 获取验证码
+        String result = vcService.generateCode(dto.getPassengerPhone());
+
+//        String passengerPhone = dto.getPassengerPhone();
+//        String result = vcService.generateCode(passengerPhone);
         return ResponseResult.success(result);
  }
 
