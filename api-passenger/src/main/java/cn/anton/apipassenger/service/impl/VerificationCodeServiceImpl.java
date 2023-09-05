@@ -17,14 +17,9 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
 		// 调用电信API， 获取验证码
 		System.out.println("调用电信API， 获取验证码");
 		
-		
 		// 存入Redis
 		System.out.println("存入Redis");
 		
-		JSONObject result = new JSONObject();
-		result.put("code", 1);
-		result.put("message", "success");
-		
-		return result.toString();
+		return "1234";
 	}
 }

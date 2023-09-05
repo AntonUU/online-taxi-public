@@ -16,6 +16,12 @@
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
+<!--		<dependency>-->
+<!--			<groupId>cn.anton</groupId>-->
+<!--			<artifactId>internal-common</artifactId>-->
+<!--			<version>1.0-SNAPSHOT</version>-->
+<!--		</dependency>-->
+
 		<dependency>
 			<groupId>com.alibaba.cloud</groupId>
 			<artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>

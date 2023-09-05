@@ -3,6 +3,7 @@ package cn.anton.apipassenger.controller;
 import cn.anton.apipassenger.request.VerificationCodeDTO;
 import cn.anton.apipassenger.service.VerificationCodeService;
 import cn.anton.apipassenger.service.impl.VerificationCodeServiceImpl;
+import cn.anton.internalcommon.dao.ResponseResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,11 +21,11 @@ public class VerificationCodeController {
     private VerificationCodeService vcService = new VerificationCodeServiceImpl();
     
     @GetMapping("/verification-code")
-    public String verificationCode(@RequestBody VerificationCodeDTO dto){
+    public ResponseResult verificationCode(@RequestBody VerificationCodeDTO dto){
         String passengerPhone = dto.getPassengerPhone();
         System.out.println("接收到的验证码：" + passengerPhone);
         String result = vcService.generateCode(passengerPhone);
-        return result;
+        return ResponseResult.success(result);
  }
 
 }
