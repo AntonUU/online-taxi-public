@@ -10,7 +10,10 @@ spring:
     nacos:
       discovery:
         server-addr: localhost:8848
-
       config:
         server-addr: localhost:8848
         file-extension: yaml
+  redis:
+    port: 6379
+    host: localhost
+    database: 0

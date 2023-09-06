@@ -6,6 +6,6 @@ package cn.anton.apipassenger.service;
  */
 public interface VerificationCodeService {
 
-	String generateCode(String passengerPhon);
+	void generateCode(String passengerPhon);
 	
 }

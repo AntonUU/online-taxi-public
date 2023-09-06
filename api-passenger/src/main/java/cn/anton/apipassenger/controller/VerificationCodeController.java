@@ -26,11 +26,11 @@ public class VerificationCodeController {
         // 验证手机号
         
         // 获取验证码
-        String result = vcService.generateCode(dto.getPassengerPhone());
+        vcService.generateCode(dto.getPassengerPhone());
 
 //        String passengerPhone = dto.getPassengerPhone();
 //        String result = vcService.generateCode(passengerPhone);
-        return ResponseResult.success(result);
+        return ResponseResult.success("success");
  }
 
 }
