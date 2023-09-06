@@ -2,8 +2,9 @@ package cn.anton.apipassenger.service.impl;
 
 import cn.anton.apipassenger.feign.ServiceVerificationcodeCilent;
 import cn.anton.apipassenger.service.VerificationCodeService;
+import cn.anton.internalcommon.constant.CommonStatusEnum;
 import cn.anton.internalcommon.dao.ResponseResult;
-import net.sf.json.JSONObject;
+import cn.anton.internalcommon.response.TokenResponse;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -22,20 +23,58 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
 	@Resource
 	private StringRedisTemplate stringRedisTemplate;
 	
-	private final String verificationCodePrefix = "passenger-verification-code-";
+	private final String VERIFICATIONCODEPREFIX = "passenger-verification-code-";
 	
 	
 	@Override
-	public void generateCode(String passengerPhon) {
+	public void generateCode(String passengerPhone) {
 		
 		// 调用电信API， 获取验证码
 		ResponseResult responseResult = serviceVerificationcodeCilent.numberCode();
 		Integer numberCode = (Integer) responseResult.getData();
 		
 		// 存入Redis
-		String key = verificationCodePrefix + passengerPhon;
+		String key = generatorKeyByPhone(passengerPhone);
 		String val = numberCode + "";
 		stringRedisTemplate.opsForValue().set(key, val, 2, TimeUnit.MINUTES);
 		
+	}
+	
+	/**
+	 * 验证乘客验证码并颁发token
+	 * @param passengerPhone
+	 * @param verificationCode
+	 * @return
+	 */
+	@Override
+	public ResponseResult checkCode(String passengerPhone, String verificationCode) {
+		// 根据手机号，去redis读取验证码
+		String key = generatorKeyByPhone(passengerPhone);
+		String codeRedis = stringRedisTemplate.opsForValue().get(key);
+		
+		// 校验验证码
+		System.out.println("redis中的code: " + codeRedis);
+		if (codeRedis != null && codeRedis.equals(verificationCode)) {
+			// 判断用户是否有过注册
+			
+			// 颁发令牌
+			// 响应
+			TokenResponse tokenResponse = new TokenResponse();
+			tokenResponse.setToken("token str");
+			return ResponseResult.success(tokenResponse);
+		} else {
+			// 验证码不正确
+			return ResponseResult.fail(CommonStatusEnum.VERIFICATION_CODE_ERROR.getCode(), CommonStatusEnum.VERIFICATION_CODE_ERROR.getMessage());
+		}
+		
+	}
+	
+	/**
+	 * 根据手机号生成key
+	 * @param passengerPhone
+	 * @return
+	 */
+	private String generatorKeyByPhone(String passengerPhone){
+		return VERIFICATIONCODEPREFIX + passengerPhone;
 	}
 }

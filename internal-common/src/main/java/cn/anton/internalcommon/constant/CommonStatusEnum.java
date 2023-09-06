@@ -7,6 +7,9 @@ import lombok.Getter;
  * @create_date: 2023/9/5 18:49
  */
 public enum CommonStatusEnum {
+	
+	VERIFICATION_CODE_ERROR(1099, "验证码不正确！"),
+	
 	/**
 	 * 成功
 	 */

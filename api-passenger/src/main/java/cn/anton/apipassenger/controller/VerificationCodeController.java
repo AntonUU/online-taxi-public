@@ -1,11 +1,13 @@
 package cn.anton.apipassenger.controller;
 
 import cn.anton.apipassenger.feign.ServiceVerificationcodeCilent;
+import cn.anton.apipassenger.request.VerificationCodeCheckDTO;
 import cn.anton.apipassenger.request.VerificationCodeDTO;
 import cn.anton.apipassenger.service.VerificationCodeService;
 import cn.anton.apipassenger.service.impl.VerificationCodeServiceImpl;
 import cn.anton.internalcommon.dao.ResponseResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,18 +21,29 @@ import javax.annotation.Resource;
 public class VerificationCodeController {
 
     @Resource
-    private VerificationCodeService vcService = new VerificationCodeServiceImpl();
+    private VerificationCodeService verificationCodeService;
     
+    /**
+     * 乘客手机号获取验证码
+     * @param dto
+     * @return
+     */
     @GetMapping("/verification-code")
     public ResponseResult verificationCode(@RequestBody VerificationCodeDTO dto){
         // 验证手机号
         
         // 获取验证码
-        vcService.generateCode(dto.getPassengerPhone());
-
-//        String passengerPhone = dto.getPassengerPhone();
-//        String result = vcService.generateCode(passengerPhone);
+        verificationCodeService.generateCode(dto.getPassengerPhone());
         return ResponseResult.success("success");
  }
-
+    
+    @PostMapping("/verification-code-check")
+    public ResponseResult verificationCodeCheck(@RequestBody VerificationCodeCheckDTO dto){
+    
+        ResponseResult result = verificationCodeService.checkCode(dto.getPassengerPhone(), dto.getVerificationCode());
+    
+    
+        return result;
+    }
+ 
 }
