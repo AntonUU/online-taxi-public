@@ -4,9 +4,11 @@ import cn.anton.apipassenger.feign.ServicePassengerUserClient;
 import cn.anton.apipassenger.feign.ServiceVerificationcodeCilent;
 import cn.anton.apipassenger.service.VerificationCodeService;
 import cn.anton.internalcommon.constant.CommonStatusEnum;
+import cn.anton.internalcommon.constant.IdentityConstant;
 import cn.anton.internalcommon.dao.ResponseResult;
 import cn.anton.internalcommon.request.VerificationCodeDTO;
 import cn.anton.internalcommon.response.TokenResponse;
+import cn.anton.internalcommon.util.JWTUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -66,10 +68,11 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
 			// 删除redis中的验证码
 			stringRedisTemplate.delete(generatorKeyByPhone(passengerPhone));
 			// 颁发令牌
+			String token = JWTUtils.generatorToken(passengerPhone, IdentityConstant.PASSENGER_DIENTITY);
 			
 			// 响应
 			TokenResponse tokenResponse = new TokenResponse();
-			tokenResponse.setToken("token str");
+			tokenResponse.setToken(token);
 			return ResponseResult.success(tokenResponse);
 		} else {
 			// 验证码不正确
