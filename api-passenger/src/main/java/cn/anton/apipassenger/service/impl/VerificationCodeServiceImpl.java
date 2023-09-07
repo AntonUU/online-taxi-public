@@ -1,9 +1,11 @@
 package cn.anton.apipassenger.service.impl;
 
+import cn.anton.apipassenger.feign.ServicePassengerUserClient;
 import cn.anton.apipassenger.feign.ServiceVerificationcodeCilent;
 import cn.anton.apipassenger.service.VerificationCodeService;
 import cn.anton.internalcommon.constant.CommonStatusEnum;
 import cn.anton.internalcommon.dao.ResponseResult;
+import cn.anton.internalcommon.request.VerificationCodeDTO;
 import cn.anton.internalcommon.response.TokenResponse;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,8 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
 	private ServiceVerificationcodeCilent serviceVerificationcodeCilent;
 	@Resource
 	private StringRedisTemplate stringRedisTemplate;
+	@Resource
+	private ServicePassengerUserClient servicePassengerUserClient;
 	
 	private final String VERIFICATIONCODEPREFIX = "passenger-verification-code-";
 	
@@ -55,9 +59,14 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
 		// 校验验证码
 		System.out.println("redis中的code: " + codeRedis);
 		if (codeRedis != null && codeRedis.equals(verificationCode)) {
+			VerificationCodeDTO dto = new VerificationCodeDTO();
+			dto.setPassengerPhone(passengerPhone);
 			// 判断用户是否有过注册
-			
+			ResponseResult responseResult = servicePassengerUserClient.loginOrRegister(dto);
+			// 删除redis中的验证码
+			stringRedisTemplate.delete(generatorKeyByPhone(passengerPhone));
 			// 颁发令牌
+			
 			// 响应
 			TokenResponse tokenResponse = new TokenResponse();
 			tokenResponse.setToken("token str");

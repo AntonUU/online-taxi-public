@@ -1,10 +1,7 @@
 package cn.anton.apipassenger.controller;
 
-import cn.anton.apipassenger.feign.ServiceVerificationcodeCilent;
-import cn.anton.apipassenger.request.VerificationCodeCheckDTO;
-import cn.anton.apipassenger.request.VerificationCodeDTO;
+import cn.anton.internalcommon.request.VerificationCodeDTO;
 import cn.anton.apipassenger.service.VerificationCodeService;
-import cn.anton.apipassenger.service.impl.VerificationCodeServiceImpl;
 import cn.anton.internalcommon.dao.ResponseResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,7 +35,7 @@ public class VerificationCodeController {
  }
     
     @PostMapping("/verification-code-check")
-    public ResponseResult verificationCodeCheck(@RequestBody VerificationCodeCheckDTO dto){
+    public ResponseResult verificationCodeCheck(@RequestBody VerificationCodeDTO dto){
     
         ResponseResult result = verificationCodeService.checkCode(dto.getPassengerPhone(), dto.getVerificationCode());
     
