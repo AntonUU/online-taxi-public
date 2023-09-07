@@ -41,6 +41,10 @@ public class ResponseResult<T> {
 		return new ResponseResult().setCode(code).setMessage(message);
 	}
 	
+	public static ResponseResult fail(String message){
+		return new ResponseResult().setCode(CommonStatusEnum.FAIL.getCode()).setMessage(message);
+	}
+	
 	/**
 	 * 统一的失败
 	 * @param data

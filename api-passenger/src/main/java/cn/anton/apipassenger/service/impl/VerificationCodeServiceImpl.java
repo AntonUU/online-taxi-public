@@ -69,6 +69,9 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
 			stringRedisTemplate.delete(generatorKeyByPhone(passengerPhone));
 			// 颁发令牌
 			String token = JWTUtils.generatorToken(passengerPhone, IdentityConstant.PASSENGER_DIENTITY);
+			System.out.println("获得的token: "+ token);
+			
+			// 将令牌放入Redis
 			
 			// 响应
 			TokenResponse tokenResponse = new TokenResponse();
