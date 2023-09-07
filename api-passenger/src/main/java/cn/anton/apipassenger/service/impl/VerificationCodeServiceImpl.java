@@ -9,6 +9,7 @@ import cn.anton.internalcommon.dao.ResponseResult;
 import cn.anton.internalcommon.request.VerificationCodeDTO;
 import cn.anton.internalcommon.response.TokenResponse;
 import cn.anton.internalcommon.util.JWTUtils;
+import cn.anton.internalcommon.util.PrefixGeneratorUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,7 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
 	private ServicePassengerUserClient servicePassengerUserClient;
 	
 	private final String VERIFICATIONCODEPREFIX = "passenger-verification-code-";
+	
 	
 	
 	@Override
@@ -72,6 +74,8 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
 			System.out.println("获得的token: "+ token);
 			
 			// 将令牌放入Redis
+			stringRedisTemplate.opsForValue()
+					.set(PrefixGeneratorUtils.generatorTokenKey(passengerPhone, IdentityConstant.PASSENGER_DIENTITY), token, 30, TimeUnit.DAYS);
 			
 			// 响应
 			TokenResponse tokenResponse = new TokenResponse();

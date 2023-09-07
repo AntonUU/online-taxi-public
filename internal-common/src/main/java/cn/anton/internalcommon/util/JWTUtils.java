@@ -33,17 +33,17 @@ public class JWTUtils {
 		map.put(JWT_KEY_PHONE, passengerPhone);
 		map.put(JWT_KEY_IDENTITY, identity);
 		
-		// Token过期时间
-		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.DATE, 1);
-		Date date = calendar.getTime();
+		// jwt过期时间
+//		Calendar calendar = Calendar.getInstance();
+//		calendar.add(Calendar.DATE, 1);
+//		Date date = calendar.getTime();
 		
 		JWTCreator.Builder builder = JWT.create();
 		map.forEach((k, y) -> {
 			builder.withClaim(k, y);
 		});
 //		builder.withClaim(JWT_KEY_PHONE, passengerPhone);
-		builder.withExpiresAt(date);
+//		builder.withExpiresAt(date); // jwt有效时间设置
 		
 		String sign = builder.sign(Algorithm.HMAC256(SIGN));
 		
