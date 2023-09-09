@@ -5,6 +5,9 @@ import cn.anton.internalcommon.dao.TokenResult;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.AlgorithmMismatchException;
+import com.auth0.jwt.exceptions.SignatureVerificationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
@@ -27,11 +30,14 @@ public class JWTUtils {
 	 */
 	private static final String JWT_KEY_IDENTITY = "identity";
 	
+	private static final String TOKEN_TYPE = "tokenType";
+	
 	// 生成token
-	public static String generatorToken(String passengerPhone, String identity) {
+	public static String generatorToken(String passengerPhone, String identity, String tokenType) {
 		Map<String, String> map = new HashMap<>();
 		map.put(JWT_KEY_PHONE, passengerPhone);
 		map.put(JWT_KEY_IDENTITY, identity);
+		map.put(TOKEN_TYPE, tokenType);
 		
 		// jwt过期时间
 //		Calendar calendar = Calendar.getInstance();
@@ -53,18 +59,34 @@ public class JWTUtils {
 	public static void main(String[] args) {
 		String passenger_phone = "1577719110";
 		
-		String s = JWTUtils.generatorToken(passenger_phone, IdentityConstant.DRIVER_DIENTITY);
+		String s = JWTUtils.generatorToken(passenger_phone, IdentityConstant.DRIVER_DIENTITY, "accessToken");
 		System.out.println("生成的Token： " + s);
 		TokenResult tokenResult = JWTUtils.parseToken(s);
 		System.out.println("解析的Token: " + tokenResult);
+	}
+	
+	/**
+	 * 校验token， 主要判断token是否异常
+	 * @param token
+	 * @return
+	 */
+	public static TokenResult checkToken(String token){
+		if (token == null || "".equals(token)) return null;
+		TokenResult tokenResult = null;
+		try {
+			tokenResult = JWTUtils.parseToken(token);
+			return tokenResult;
+		} catch (Exception e) {
+		}
+		return null;
 	}
 	
 	
 	// 解析token
 	public static TokenResult parseToken(String sign){
 		DecodedJWT verify = JWT.require(Algorithm.HMAC256(SIGN)).build().verify(sign);
-		String passengerPhone = verify.getClaim(JWT_KEY_PHONE).toString();
-		String identity = verify.getClaim(JWT_KEY_IDENTITY).toString();
+		String passengerPhone = verify.getClaim(JWT_KEY_PHONE).asString();
+		String identity = verify.getClaim(JWT_KEY_IDENTITY).asString();
 		
 		TokenResult tokenResult = new TokenResult();
 		tokenResult.setIdentity(identity);

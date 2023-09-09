@@ -12,5 +12,4 @@ public interface VerificationCodeService {
 	
 	ResponseResult checkCode(String passengerPhone, String verificationCode);
 	
-	
 }

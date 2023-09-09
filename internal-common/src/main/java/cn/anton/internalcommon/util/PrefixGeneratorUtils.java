@@ -10,9 +10,7 @@ public class PrefixGeneratorUtils {
 	private static final String TOKEN_PREFIX = "token-";
 	
 	
-	public static String generatorTokenKey(String passengerPhone, String identity){
-		System.out.println(passengerPhone);
-		System.out.println(identity);
-		return TOKEN_PREFIX + passengerPhone + "-" + identity;
+	public static String generatorTokenKey(String passengerPhone, String identity, String tokenType){
+		return TOKEN_PREFIX + passengerPhone + "-" + identity + "-" + tokenType;
 	}
 }

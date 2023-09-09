@@ -5,6 +5,7 @@ import cn.anton.apipassenger.feign.ServiceVerificationcodeCilent;
 import cn.anton.apipassenger.service.VerificationCodeService;
 import cn.anton.internalcommon.constant.CommonStatusEnum;
 import cn.anton.internalcommon.constant.IdentityConstant;
+import cn.anton.internalcommon.constant.TokenConstant;
 import cn.anton.internalcommon.dao.ResponseResult;
 import cn.anton.internalcommon.request.VerificationCodeDTO;
 import cn.anton.internalcommon.response.TokenResponse;
@@ -48,6 +49,8 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
 		
 	}
 	
+	
+	
 	/**
 	 * 验证乘客验证码并颁发token
 	 * @param passengerPhone
@@ -69,17 +72,27 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
 			ResponseResult responseResult = servicePassengerUserClient.loginOrRegister(dto);
 			// 删除redis中的验证码
 			stringRedisTemplate.delete(generatorKeyByPhone(passengerPhone));
-			// 颁发令牌
-			String token = JWTUtils.generatorToken(passengerPhone, IdentityConstant.PASSENGER_DIENTITY);
-			System.out.println("获得的token: "+ token);
+			// 单token的颁发令牌
+//			String token = JWTUtils.generatorToken(passengerPhone, IdentityConstant.PASSENGER_DIENTITY);
+			
+			// 双token的颁发
+			String accessToken = JWTUtils.generatorToken(passengerPhone, IdentityConstant.PASSENGER_DIENTITY, TokenConstant.ACCESS_TOKEN);
+			String refreshToken = JWTUtils.generatorToken(passengerPhone, IdentityConstant.PASSENGER_DIENTITY, TokenConstant.REFRESH_TOKEN);
 			
 			// 将令牌放入Redis
+			// accessToken
+			String accessTokenKey = PrefixGeneratorUtils.generatorTokenKey(passengerPhone, IdentityConstant.PASSENGER_DIENTITY, TokenConstant.ACCESS_TOKEN);
 			stringRedisTemplate.opsForValue()
-					.set(PrefixGeneratorUtils.generatorTokenKey(passengerPhone, IdentityConstant.PASSENGER_DIENTITY), token, 30, TimeUnit.DAYS);
+					.set(accessTokenKey,  accessToken, 14, TimeUnit.DAYS);
+			// refreshToken
+			String refreshTokenKey = PrefixGeneratorUtils.generatorTokenKey(passengerPhone, IdentityConstant.PASSENGER_DIENTITY, TokenConstant.REFRESH_TOKEN);
+			stringRedisTemplate.opsForValue()
+					.set(refreshTokenKey,  accessToken, 30, TimeUnit.DAYS);
 			
 			// 响应
 			TokenResponse tokenResponse = new TokenResponse();
-			tokenResponse.setToken(token);
+			tokenResponse.setAccessToken(accessToken);
+			tokenResponse.setRefreshToken(refreshToken);
 			return ResponseResult.success(tokenResponse);
 		} else {
 			// 验证码不正确

@@ -17,7 +17,11 @@ public enum CommonStatusEnum {
 	/**
 	 * 失败
 	 */
-	FAIL(0, "fail")
+	FAIL(0, "fail"),
+	
+	
+	// Token类提示
+	TOKEN_ERROR(1199, "token error ....")
 	;
 	@Getter
 	private int code;

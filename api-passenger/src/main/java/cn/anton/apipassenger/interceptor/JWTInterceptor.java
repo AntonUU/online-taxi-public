@@ -1,5 +1,6 @@
 package cn.anton.apipassenger.interceptor;
 
+import cn.anton.internalcommon.constant.TokenConstant;
 import cn.anton.internalcommon.dao.ResponseResult;
 import cn.anton.internalcommon.dao.TokenResult;
 import cn.anton.internalcommon.util.JWTUtils;
@@ -9,7 +10,9 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.AlgorithmMismatchException;
 import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
+import io.netty.util.internal.StringUtil;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -24,6 +27,10 @@ import java.io.PrintWriter;
  */
 public class JWTInterceptor implements HandlerInterceptor {
 	
+	/**
+	 * JWTInterceptor是在SpringBean之前初始化的， 所以说JWTInterceptor初始化之前Bean还没有开始初始化
+	 * 所以会导致Bean注入失败 StringRedisTemplate 为null， 需要在拦截器执行之前将JWTInterceptor初始化
+	 */
 	@Resource
 	private StringRedisTemplate stringRedisTemplate;
 	
@@ -41,27 +48,20 @@ public class JWTInterceptor implements HandlerInterceptor {
 		String resultString = "";
 		
 		String token = request.getHeader("Authorization");
-		try {
-			TokenResult tokenResult = JWTUtils.parseToken(token);
-			String s1 = PrefixGeneratorUtils.generatorTokenKey(tokenResult.getPassengerPhone(), tokenResult.getIdentity());
-			System.out.println("生成的key：" + s1);
-			String s = stringRedisTemplate.opsForValue().get(s1);
-			System.out.println("得到的val" + s);
-			if (s == null || "".equals(s)){
-				throw new SignatureVerificationException(Algorithm.HMAC256(token));
-			}
-		} catch (SignatureVerificationException e) {
-			result = false;
-			resultString = "token sign error...";
-		} catch (TokenExpiredException e) {
-			result = false;
-			resultString = "token time out...";
-		} catch (AlgorithmMismatchException e){
-			result = false;
-			resultString = "token AlgorithmMismatchException";
-		} catch (Exception e) {
-			result = false;
+		TokenResult tokenResult = JWTUtils.checkToken(token);
+		
+		if (tokenResult == null) {
 			resultString = "token invalid";
+			result = false;
+		} else {
+			// 生成ACCESS_TOKEN_KEY
+			String accessTokenKey = PrefixGeneratorUtils.generatorTokenKey(tokenResult.getPassengerPhone(), tokenResult.getIdentity(), TokenConstant.ACCESS_TOKEN);
+			String tokenRedis = stringRedisTemplate.opsForValue().get(accessTokenKey);
+			
+			if ((StringUtils.isBlank(tokenRedis)) || (!token.trim().equals(tokenRedis.trim()))){
+				resultString = "token invalid";
+				result = false;
+			}
 		}
 		
 		if (!result) {
