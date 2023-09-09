@@ -26,6 +26,6 @@ public class InterceptorConfig implements WebMvcConfigurer {
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(jwtInterceptor())
 				.addPathPatterns("/**")  //拦截的路径
-				.excludePathPatterns("/verification-code**"); // 不拦截的路径
+				.excludePathPatterns("/verification-code**", "/token-refresh");// 不拦截的路径
 	}
 }

@@ -41,8 +41,8 @@ public class TokenServiceImpl implements TokenService {
 		String redisRefreshTokenKey = PrefixGeneratorUtils.generatorTokenKey(passengerPhone, identity, TokenConstant.REFRESH_TOKEN);
 		String redisToken = stringRedisTemplate.opsForValue().get(redisRefreshTokenKey);
 		
-		if ((StringUtils.isBlank(redisToken)) || !(refreshTokenStr.trim().equals(redisToken))) {
-			ResponseResult.fail(CommonStatusEnum.TOKEN_ERROR.getCode(), CommonStatusEnum.TOKEN_ERROR.getMessage());
+		if ((StringUtils.isBlank(redisToken)) || !(refreshTokenStr.equals(redisToken))) {
+			return ResponseResult.fail(CommonStatusEnum.TOKEN_ERROR.getCode(), CommonStatusEnum.TOKEN_ERROR.getMessage());
 		}
 		
 		// 成功生成双token
@@ -56,8 +56,6 @@ public class TokenServiceImpl implements TokenService {
 				.set(redisAccessTokenKey,  accessToken, 14, TimeUnit.DAYS);
 		stringRedisTemplate.opsForValue()
 				.set(redisRefreshTokenKey,  refreshToken, 30, TimeUnit.DAYS);
-		
-		
 		
 		return ResponseResult.success(new TokenResponse(accessToken, refreshToken));
 	}
