@@ -68,7 +68,9 @@ public class JWTInterceptor implements HandlerInterceptor {
 			PrintWriter writer = response.getWriter();
 			writer.print(JSONObject.fromObject(ResponseResult.fail(resultString)));
 		}
-		
+		// TODO 使用线程类，传递当前用户信息， 待完成
+//		ThreadLocal threadLocal = new ThreadLocal();
 		return result;
 	}
+	
 }

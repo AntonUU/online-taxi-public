@@ -1,9 +1,13 @@
 package cn.anton.servicepassengeruser.service.impl;
 
+import cn.anton.internalcommon.constant.CommonStatusEnum;
 import cn.anton.internalcommon.dao.ResponseResult;
+import cn.anton.internalcommon.dao.UserInfoDao;
 import cn.anton.servicepassengeruser.dto.PassengerUser;
 import cn.anton.servicepassengeruser.mapper.PassengerUserMapper;
 import cn.anton.servicepassengeruser.service.UserService;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -21,7 +25,12 @@ public class UserServiceImpl implements UserService {
     
     @Resource
     private PassengerUserMapper passengerUserMapper;
- 
+    
+    /**
+     * 注册与登录
+     * @param passengerPhone
+     * @return
+     */
     @Override
     public ResponseResult loginOrRegister(String passengerPhone) {
         System.out.println("userService调用， 手机号: " + passengerPhone);
@@ -39,18 +48,28 @@ public class UserServiceImpl implements UserService {
             entity.setPassengerName("王五");
             entity.setPassengerPhone(passengerPhone);
             entity.setState(false);
-            entity.setPassenger_gender(true);
+            entity.setPassengerGender(true);
             LocalDateTime now = LocalDateTime.now();
-            entity.setGmt_create(now);
-            entity.setGmt_modified(now);
+            entity.setGmtCreate(now);
+            entity.setGmtModified(now);
             
             passengerUserMapper.insert(entity);
         }
         // 颁发Token
-            
-        
      
         return null;
+    }
+    
+    @Override
+    public ResponseResult getUser(String passengerPhone) {
+    
+        PassengerUser user = passengerUserMapper.selectOne(new QueryWrapper<PassengerUser>().eq("passenger_phone", passengerPhone).eq("state", 0));
+    
+        if (user == null)
+            return ResponseResult.fail(CommonStatusEnum.USER_NOT_EXISTS.getCode(), CommonStatusEnum.USER_NOT_EXISTS.getMessage());
+        new PassengerUser();
+        
+        return ResponseResult.success(user);
     }
     
 }

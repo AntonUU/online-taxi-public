@@ -9,4 +9,7 @@ import cn.anton.internalcommon.dao.ResponseResult;
 public interface UserService {
  
     ResponseResult loginOrRegister(String passengerPhone);
+    
+    ResponseResult getUser(String passengerPhone);
+    
 }

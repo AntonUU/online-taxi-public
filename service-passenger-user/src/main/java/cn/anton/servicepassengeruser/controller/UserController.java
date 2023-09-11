@@ -4,9 +4,7 @@ import cn.anton.internalcommon.dao.ResponseResult;
 import cn.anton.internalcommon.request.VerificationCodeDTO;
 import cn.anton.servicepassengeruser.service.UserService;
 import cn.anton.servicepassengeruser.service.impl.UserServiceImpl;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -28,8 +26,14 @@ public class UserController {
 		
 		userService.loginOrRegister(passengerPhone);
 		
-		
 		return ResponseResult.success();
 	}
+	
+	@GetMapping("/user/{passengerPhone}")
+	public ResponseResult getUser(@PathVariable("passengerPhone") String passengerPhone){
+		ResponseResult result = userService.getUser(passengerPhone);
+		return result;
+	}
+	
 	
 }
