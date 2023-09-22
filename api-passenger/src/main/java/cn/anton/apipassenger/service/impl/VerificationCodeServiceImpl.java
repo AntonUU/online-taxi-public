@@ -68,7 +68,7 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
 		if (codeRedis != null && codeRedis.equals(verificationCode)) {
 			VerificationCodeDTO dto = new VerificationCodeDTO();
 			dto.setPassengerPhone(passengerPhone);
-			// 判断用户是否有过注册
+			// 判断用户是否有过注册  TODO 此处有无 待
 			ResponseResult responseResult = servicePassengerUserClient.loginOrRegister(dto);
 			// 删除redis中的验证码
 			stringRedisTemplate.delete(generatorKeyByPhone(passengerPhone));
