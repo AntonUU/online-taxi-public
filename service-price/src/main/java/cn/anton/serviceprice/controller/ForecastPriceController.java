@@ -21,7 +21,6 @@ public class ForecastPriceController {
 	
 	@PostMapping("/forecast-price")
 	public ResponseResult forecastPrice(@RequestBody ForecastPriceDTO dto){
-		
 		ResponseResult result = forecastPriceService.forecastPrice(dto);
 		
 		return result;

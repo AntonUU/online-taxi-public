@@ -6,7 +6,6 @@ import cn.anton.internalcommon.response.DirectionResponse;
 import cn.anton.servicemap.remote.MapDirectionClient;
 import cn.anton.servicemap.service.DirectionService;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
