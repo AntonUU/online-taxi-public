@@ -24,12 +24,6 @@ public class ForecastPriceController {
 	
 	@PostMapping("/forecast-price")
 	public ResponseResult forecastPrice(@RequestBody ForecastPriceDTO dto) {
-		log.info("出发地经度: {}, 出发地纬度: {}, 目的地经度: {}, 目的地纬度: {}",dto.getDepLongitude(), dto.getDepLatitude(), dto.getDestLongitude(), dto.getDestLatitude());
-		String depLongitude = dto.getDepLongitude();
-		String depLatitude = dto.getDepLatitude();
-		String destLongitude = dto.getDestLongitude();
-		String destLatitude = dto.getDestLatitude();
-		
 		ResponseResult result = forecastPriceService.forecastPrice(dto);
 		
 		return result;

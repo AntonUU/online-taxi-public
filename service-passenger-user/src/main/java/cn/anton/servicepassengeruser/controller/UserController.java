@@ -24,9 +24,9 @@ public class UserController {
 		String passengerPhone = dto.getPassengerPhone();
 		System.out.println("乘客手机号：" + passengerPhone);
 		
-		userService.loginOrRegister(passengerPhone);
+		ResponseResult result = userService.loginOrRegister(passengerPhone);
 		
-		return ResponseResult.success();
+		return result;
 	}
 	
 	@GetMapping("/user/{passengerPhone}")

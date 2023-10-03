@@ -48,16 +48,16 @@ public class UserServiceImpl implements UserService {
             entity.setPassengerName("王五");
             entity.setPassengerPhone(passengerPhone);
             entity.setState(false);
-            entity.setPassengerGender(true);
+            entity.setPassengerGender(1);
             LocalDateTime now = LocalDateTime.now();
             entity.setGmtCreate(now);
             entity.setGmtModified(now);
             
             passengerUserMapper.insert(entity);
+            return ResponseResult.success();
         }
-        // 颁发Token
      
-        return null;
+        return ResponseResult.fail(CommonStatusEnum.USER_EXISTS.getCode(), CommonStatusEnum.USER_EXISTS.getMessage());
     }
     
     @Override

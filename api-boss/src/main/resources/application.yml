@@ -1,0 +1,13 @@
+server:
+  port: 13000
+
+
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+  application:
+    name: api-boss
+  profiles:
+    active: prod

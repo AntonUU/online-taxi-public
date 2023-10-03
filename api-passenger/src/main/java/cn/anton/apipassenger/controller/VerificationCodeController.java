@@ -28,17 +28,20 @@ public class VerificationCodeController {
     @GetMapping("/verification-code")
     public ResponseResult verificationCode(@RequestBody VerificationCodeDTO dto){
         // 验证手机号
-        
+        String phone = dto.getPassengerPhone();
+    
         // 获取验证码
-        verificationCodeService.generateCode(dto.getPassengerPhone());
-        return ResponseResult.success("success");
+        verificationCodeService.generateCode((phone == null) ? dto.getDriverPhone() : phone, phone != null);
+        return ResponseResult.success();
  }
     
     @PostMapping("/verification-code-check")
     public ResponseResult verificationCodeCheck(@RequestBody VerificationCodeDTO dto){
     
-        ResponseResult result = verificationCodeService.checkCode(dto.getPassengerPhone(), dto.getVerificationCode());
+        String phone = dto.getPassengerPhone();
+        boolean flag = phone != null;
     
+        ResponseResult result = verificationCodeService.checkCode(phone == null ? dto.getDriverPhone() : phone, dto.getVerificationCode(), flag);
     
         return result;
     }

@@ -38,4 +38,11 @@ public class AMapConfigConstant {
 	public static final String KEY_TOLL_DISTANCE = "toll_distance";
 	public static final String KEY_TRAFFIC_LIGHTS = "traffic_lights";
 	
+	public static final String DISTRICTS = "districts";
+	public static final String ADCODE = "adcode";
+	public static final String NAME = "name";
+	public static final String LEVEL = "level";
+	public static final String CITYCODE = "citycode";
+	public static final String STREET = "street";
+	
 }

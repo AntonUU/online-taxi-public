@@ -2,6 +2,7 @@ package cn.anton.apipassenger.feign;
 
 import cn.anton.internalcommon.dao.ResponseResult;
 import cn.anton.internalcommon.request.ForecastPriceDTO;
+import cn.anton.internalcommon.response.ForecastPriceResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface ServiceServicePriceClient {
  
  @PostMapping("/forecast-price")
- ResponseResult forecastPrice(@RequestBody ForecastPriceDTO dto);
+ ResponseResult<ForecastPriceResponse> forecastPrice(@RequestBody ForecastPriceDTO dto);
  
 }

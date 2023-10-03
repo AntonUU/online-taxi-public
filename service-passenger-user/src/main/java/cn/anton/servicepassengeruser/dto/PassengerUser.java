@@ -17,7 +17,7 @@ public class PassengerUser {
 	private Long id; // 乘客ID
 	private String passengerPhone; // 乘客手机号
 	private String passengerName; // 乘客昵称
-	private boolean passengerGender; // 乘客性别 1男 0女
+	private Integer passengerGender; // 乘客性别 0未知 1男 2女
 	@TableLogic
 	private boolean state;  // 乘客状态  0有效 1失效
 	private LocalDateTime gmtCreate; // 创建时间

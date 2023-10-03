@@ -1,0 +1,11 @@
+server:
+  port: 15000
+spring:
+  profiles:
+    active: prod
+  application:
+    name: api-driver
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848

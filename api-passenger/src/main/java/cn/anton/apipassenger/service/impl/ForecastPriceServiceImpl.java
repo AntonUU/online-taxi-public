@@ -27,9 +27,10 @@ public class ForecastPriceServiceImpl implements ForecastPriceService {
 		ForecastPriceResponse response = new ForecastPriceResponse();
 		
 		log.info("调用计价服务-计算价格: service-price");
-		ResponseResult result = serviceServicePriceClient.forecastPrice(dto);
-		
-		response.setPrice(88.66);
+		ResponseResult<ForecastPriceResponse> result = serviceServicePriceClient.forecastPrice(dto);
+		Double price = result.getData().getPrice();
+		log.info(" service-price计算出的价格: {}", price);
+		response.setPrice(price);
 		return ResponseResult.success(response);
 	}
 }

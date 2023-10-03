@@ -1,0 +1,28 @@
+server:
+  port: 12000
+spring:
+  application:
+    name: service-driver-user
+  profiles:
+    active: pro
+  datasource:
+    username: root
+    password: Dong
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/service-driver-user?characterEncoding=utf-8&serverTimeZone=GMT%2B8
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-delete-field: state
+      logic-not-delete-value: 0
+      logic-delete-value: 1
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+#logging:
+#  level:
+#    cn.anton.servicedriveruser.mapper: debug

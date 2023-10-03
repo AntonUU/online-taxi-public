@@ -47,6 +47,8 @@ public class JWTInterceptor implements HandlerInterceptor {
 		boolean result = true;
 		String resultString = "";
 		
+		System.out.println("进入了拦截器" + request.getRequestURI());
+		
 		String token = request.getHeader("Authorization");
 		TokenResult tokenResult = JWTUtils.checkToken(token);
 		
