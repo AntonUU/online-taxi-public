@@ -14,3 +14,7 @@ spring:
     username: root
     password: Dong
     url: jdbc:mysql://localhost:3306/service-map?characterEncoding=utf-8&serverTimeZone=GMT%2B8
+
+amap:
+  key: 3accf5f8347ba6031840a9158d194728
+  sid: 1007908

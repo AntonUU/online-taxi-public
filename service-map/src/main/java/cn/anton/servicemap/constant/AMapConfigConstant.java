@@ -45,4 +45,43 @@ public class AMapConfigConstant {
 	public static final String CITYCODE = "citycode";
 	public static final String STREET = "street";
 	
+	/**
+	 * 新建服务URL
+	 */
+	public static final String SERVICE_ADD_URL = "https://tsapi.amap.com/v1/track/service/add";
+	
+	/**
+	 * 终端服务URL
+	 */
+	/**
+	 * 创建终端
+	 */
+	public static final String TERMINAL_ADD_URL = "https://tsapi.amap.com/v1/track/terminal/add";
+	/**
+	 * 删除终端
+	 */
+	public static final String TERMINAL_DELETE_URL = "https://tsapi.amap.com/v1/track/terminal/delete";
+	/**
+	 * 修改终端
+	 */
+	public static final String TERMINAL_UPDATE_URL = "https://tsapi.amap.com/v1/track/terminal/update";
+	/**
+	 * 查询终端
+	 */
+	public static final String TERMINAL_LIST_URL = "https://tsapi.amap.com/v1/track/terminal/list";
+	
+	/**
+	 * 创建轨迹URL
+	 */
+	public static final String TRACE_CREATE_URL = "https://tsapi.amap.com/v1/track/trace/add";
+	
+	/**
+	 * 轨迹点上传
+	 */
+	public static final String POINT_UPDATE_URL = "https://tsapi.amap.com/v1/track/point/upload";
+	
+	/**
+	 * 周边搜索
+	 */
+	public static final String TERMINAL_AROUNDSEARCH_URL = "https://tsapi.amap.com/v1/track/terminal/aroundsearch";
 }

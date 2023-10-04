@@ -22,4 +22,6 @@ public interface CarService {
 	 * @return
 	 */
 	Car findCatById(Long carId);
+	
+	ResponseResult getCarById(Long id);
 }

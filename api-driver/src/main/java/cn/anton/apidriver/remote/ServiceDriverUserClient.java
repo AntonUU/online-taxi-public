@@ -1,13 +1,11 @@
 package cn.anton.apidriver.remote;
 
+import cn.anton.internalcommon.dao.Car;
 import cn.anton.internalcommon.dao.DriverPhoneExists;
 import cn.anton.internalcommon.dao.DriverUser;
 import cn.anton.internalcommon.dao.ResponseResult;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 /*
  * @author: Anton
@@ -27,5 +25,9 @@ public interface ServiceDriverUserClient {
 	 */
 	@GetMapping("/check-driver/{driverPhone}")
 	ResponseResult<DriverPhoneExists> checkDriverByDriverPhone(@PathVariable String driverPhone);
+	
+	@GetMapping("/car")
+	ResponseResult<Car> getCarById(@RequestParam("carId") Long carId);
+	
 	
 }
