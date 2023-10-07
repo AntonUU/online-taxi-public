@@ -9,8 +9,15 @@ public class PrefixGeneratorUtils {
 	
 	private static final String TOKEN_PREFIX = "token-";
 	
+	// 黑名单设备号
+	private static final String BLACK_DEVICE_CODE_PREFIX = "black-device-";
+	
 	
 	public static String generatorTokenKey(String passengerPhone, String identity, String tokenType){
 		return TOKEN_PREFIX + passengerPhone + "-" + identity + "-" + tokenType;
+	}
+	
+	public static String generatorBlackDeviceCodeKey(String deviceCode){
+		return BLACK_DEVICE_CODE_PREFIX + deviceCode;
 	}
 }

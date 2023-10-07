@@ -1,5 +1,6 @@
 package cn.anton.apipassenger.feign;
 
+import cn.anton.internalcommon.dao.PassengerUser;
 import cn.anton.internalcommon.dao.ResponseResult;
 import cn.anton.internalcommon.request.VerificationCodeDTO;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -19,7 +20,7 @@ public interface ServicePassengerUserClient {
 	ResponseResult loginOrRegister(@RequestBody VerificationCodeDTO dto);
 	
 	@GetMapping("/user/{passengerPhone}")
-	ResponseResult getUser(@PathVariable("passengerPhone") String passengerPhone);
+	ResponseResult<PassengerUser> getUser(@PathVariable("passengerPhone") String passengerPhone);
 	
 }
 

@@ -2,6 +2,7 @@ package cn.anton.apipassenger.service.impl;
 
 import cn.anton.apipassenger.feign.ServiceServicePriceClient;
 import cn.anton.apipassenger.service.ForecastPriceService;
+import cn.anton.internalcommon.constant.CommonStatusEnum;
 import cn.anton.internalcommon.dao.ResponseResult;
 import cn.anton.internalcommon.request.ForecastPriceDTO;
 import cn.anton.internalcommon.response.ForecastPriceResponse;
@@ -24,13 +25,17 @@ public class ForecastPriceServiceImpl implements ForecastPriceService {
 	
 	@Override
 	public ResponseResult forecastPrice(ForecastPriceDTO dto) {
-		ForecastPriceResponse response = new ForecastPriceResponse();
-		
 		log.info("调用计价服务-计算价格: service-price");
 		ResponseResult<ForecastPriceResponse> result = serviceServicePriceClient.forecastPrice(dto);
-		Double price = result.getData().getPrice();
+		ForecastPriceResponse data = result.getData();
+		if (data == null) {
+			return ResponseResult.fail(CommonStatusEnum.PRICE_RULE_ERROR.getCode(), CommonStatusEnum.PRICE_RULE_ERROR.getMessage());
+		}
+		System.out.println("service-price(Result): " + data);
+		Double price = data.getPrice();
 		log.info(" service-price计算出的价格: {}", price);
-		response.setPrice(price);
-		return ResponseResult.success(response);
+		
+		return ResponseResult.success(data);
+		
 	}
 }

@@ -10,6 +10,7 @@ import cn.anton.internalcommon.util.BigDecimalUtils;
 import cn.anton.serviceprice.mapper.PriceRuleMapper;
 import cn.anton.serviceprice.remote.ServiceMapClient;
 import cn.anton.serviceprice.service.ForecastPriceService;
+import cn.anton.serviceprice.service.PriceRuleService;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,7 @@ public class ForecastPriceServiceImpl implements ForecastPriceService {
 	private ServiceMapClient serviceMapClient;
 	
 	@Resource
-	private PriceRuleMapper priceRuleMapper;
+	private PriceRuleService priceRuleService;
 	
 	@Resource
 	private Executor executor;
@@ -43,6 +44,7 @@ public class ForecastPriceServiceImpl implements ForecastPriceService {
 	@SneakyThrows
 	@Override
 	public ResponseResult forecastPrice(ForecastPriceDTO dto) {
+		
 		ForecastPriceResponse response = new ForecastPriceResponse();
 		DirectionResponse direction = null;
 		List<PriceRule> priceRules = null;
@@ -55,14 +57,11 @@ public class ForecastPriceServiceImpl implements ForecastPriceService {
 		
 		CompletableFuture<List<PriceRule>> priceRuleTaskExecutor = CompletableFuture.supplyAsync(() -> {
 			log.info("读取计价规则");
-			Map<String, Object> map = new HashMap<>();
-			map.put("city_code", "11000");
-			map.put("vehicle_type", "1");
-			return priceRuleMapper.selectByMap(map);
+			return priceRuleService.getPriceRuleToDesc(dto.getCityCode(), dto.getVehicleType());
 		}, executor);
 		
 		CompletableFuture<Integer> combineAsync = mapTaskExecutor.thenCombineAsync(priceRuleTaskExecutor, (f1, f2) -> {
-			if (f2.size() != 1 || f1 == null) return -1;
+			if (f2.size() == 0 || f1 == null) return -1;
 			return 1;
 		});
 		
@@ -72,17 +71,24 @@ public class ForecastPriceServiceImpl implements ForecastPriceService {
 		
 		direction = mapTaskExecutor.get();
 		priceRules = priceRuleTaskExecutor.get();
-		
-		if (priceRules.size() != 1)
+		log.info("异步线程执行结果: {}", priceRules);
+		if (priceRules.size() == 0) {
 			return ResponseResult.fail(CommonStatusEnum.PRICE_RULE_EMPTY.getCode(), CommonStatusEnum.PRICE_RULE_EMPTY.getMessage());
+		}
+		
+		PriceRule priceRuleEntity = priceRules.get(0);
 		
 		log.info("距离: {}, 时长: {}", direction.getDistance(), direction.getDuration());
-		log.info("计价规则: {}", priceRules.get(0));
+		log.info("计价规则: {}", priceRuleEntity);
 		log.info("根据距离，时长和计价规则，计算价格");
 		
-		Double price = getPrice(direction, priceRules.get(0));
+		Double price = getPrice(direction, priceRuleEntity);
 		log.info("计算出的价格：{}", price);
 		response.setPrice(price);
+		response.setCityCode(dto.getCityCode());
+		response.setVehicleType(dto.getVehicleType());
+		response.setFareVersion(priceRuleEntity.getFareVersion());
+		response.setFareType(priceRuleEntity.getFareType());
 		return ResponseResult.success(response);
 	}
 	

@@ -1,6 +1,7 @@
 package cn.anton.apipassenger.interceptor;
 
 import cn.anton.internalcommon.constant.TokenConstant;
+import cn.anton.internalcommon.dao.PassengerUser;
 import cn.anton.internalcommon.dao.ResponseResult;
 import cn.anton.internalcommon.dao.TokenResult;
 import cn.anton.internalcommon.util.JWTUtils;
@@ -13,6 +14,8 @@ import com.auth0.jwt.exceptions.TokenExpiredException;
 import io.netty.util.internal.StringUtil;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -33,6 +36,10 @@ public class JWTInterceptor implements HandlerInterceptor {
 	 */
 	@Resource
 	private StringRedisTemplate stringRedisTemplate;
+	
+	@Autowired
+	@Qualifier("passengerUserThreadLocal")
+	private ThreadLocal<PassengerUser> threadLocal;
 	
 	/**
 	 * JWT拦截器
@@ -71,7 +78,10 @@ public class JWTInterceptor implements HandlerInterceptor {
 			writer.print(JSONObject.fromObject(ResponseResult.fail(resultString)));
 		}
 		// TODO 使用线程类，传递当前用户信息， 待完成
-//		ThreadLocal threadLocal = new ThreadLocal();
+		PassengerUser passengerUser = new PassengerUser();
+		passengerUser.setPassengerPhone(tokenResult.getPassengerPhone());
+		threadLocal.set(passengerUser);
+		
 		return result;
 	}
 	

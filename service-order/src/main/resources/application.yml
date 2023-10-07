@@ -1,0 +1,16 @@
+server:
+  port: 15000
+spring:
+  application:
+    name: service-order
+  profiles:
+    active: prod
+  datasource:
+    username: root
+    password: Dong
+    url: jdbc:mysql://localhost:3306/service_order?characterEncoding=utf-8&serverTimeZone=GMT%2B8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  redis:
+    host: localhost
+    port: 6379
+    database: 0

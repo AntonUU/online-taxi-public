@@ -67,7 +67,6 @@ public class UserServiceImpl implements UserService {
     
         if (user == null)
             return ResponseResult.fail(CommonStatusEnum.USER_NOT_EXISTS.getCode(), CommonStatusEnum.USER_NOT_EXISTS.getMessage());
-        new PassengerUser();
         
         return ResponseResult.success(user);
     }

@@ -74,7 +74,6 @@ public class TerminalClient {
 			responseList.add(terminalResponse);
 		}
 		
-		
 		return ResponseResult.success(responseList);
 	}
 }
