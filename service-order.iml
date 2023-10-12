@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module version="4">
+  <component name="FacetManager">
+    <facet type="Spring" name="Spring">
+      <configuration />
+    </facet>
+  </component>
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$/service-order">
+      <sourceFolder url="file://$MODULE_DIR$/service-order/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/service-order/src/main/resources" type="java-resource" />
+    </content>
+  </component>
+</module>

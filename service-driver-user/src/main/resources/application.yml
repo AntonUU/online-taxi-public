@@ -20,9 +20,10 @@ mybatis-plus:
       logic-delete-field: state
       logic-not-delete-value: 0
       logic-delete-value: 1
-#  configuration:
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath:/mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
-#logging:
-#  level:
-#    cn.anton.servicedriveruser.mapper: debug
+logging:
+  level:
+    cn.anton.servicedriveruser.mapper: debug

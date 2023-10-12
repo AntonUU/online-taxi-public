@@ -46,8 +46,13 @@ public enum CommonStatusEnum {
 	 */
 	MAP_DISTRICT_ERROR(1400, "地图请求错误...."),
 	
+	/**
+	 * 司机服务
+	 */
 	CAR_DRIVER_USER_NOT_FIND(1500, "找不到司机或用户 .... "),
 	CAR_DRIVER_USER_EXISTS(1510, "重复绑定 .... "),
+	CITY_DRIVER_EMPTY(1520, "当前城市没有可用司机"),
+	
 	
 	/**
 	 * 订单服务

@@ -1,8 +1,11 @@
 package cn.anton.servicedriveruser.mapper;
 
 import cn.anton.internalcommon.dao.DriverUser;
+import cn.anton.internalcommon.response.OrderDriverResponse;
+import cn.anton.internalcommon.select.DriverCarSelect;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 /*
  * @author: Anton
@@ -10,4 +13,8 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface DriverUserMapper extends BaseMapper<DriverUser> {
+
+	Integer selectCityDriverUserByCityCode(@Param("cityCode") String cityCode);
+	
+	OrderDriverResponse getAvailableDriver(DriverCarSelect driverCarSelect);
 }

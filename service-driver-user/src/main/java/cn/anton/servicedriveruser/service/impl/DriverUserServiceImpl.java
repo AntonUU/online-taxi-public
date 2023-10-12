@@ -1,10 +1,14 @@
 package cn.anton.servicedriveruser.service.impl;
 
+import cn.anton.internalcommon.constant.DriverCarStatusConstant;
 import cn.anton.internalcommon.dao.DriverPhoneExists;
 import cn.anton.internalcommon.dao.DriverUser;
 import cn.anton.internalcommon.dao.ResponseResult;
+import cn.anton.internalcommon.response.OrderDriverResponse;
+import cn.anton.internalcommon.select.DriverCarSelect;
 import cn.anton.servicedriveruser.mapper.DriverUserMapper;
 import cn.anton.servicedriveruser.service.DriverUserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -18,6 +22,7 @@ import java.util.Map;
  * @create_date: 2023/9/29 07:27
  */
 @Service
+@Slf4j
 public class DriverUserServiceImpl implements DriverUserService {
 	
 	@Resource
@@ -66,4 +71,18 @@ public class DriverUserServiceImpl implements DriverUserService {
 		
 		return ResponseResult.success(driverUsers.get(0));
 	}
+	
+	@Override
+	public ResponseResult<OrderDriverResponse> getAvailableDriver(String carId) {
+		
+		DriverCarSelect driverCarSelect = new DriverCarSelect();
+		driverCarSelect.setCarId(carId);
+		driverCarSelect.setBindStatus(DriverCarStatusConstant.DRIVER_CAR_BIND);
+		driverCarSelect.setWorkStatus(DriverCarStatusConstant.DRIVER_CAR_STATUS_START);
+		OrderDriverResponse orderDriverResponse =  driverUserMapper.getAvailableDriver(driverCarSelect);
+		log.info("查到的司机信息: {}", driverCarSelect);
+		return ResponseResult.success(orderDriverResponse);
+	}
+	
+	
 }

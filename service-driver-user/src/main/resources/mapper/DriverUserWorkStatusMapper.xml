@@ -1,0 +1,17 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.anton.servicedriveruser.mapper.DriverUserWorkStatusMapper">
+
+<!--    <select id="selectCityDriverUserByCityCode" resultType="java.lang.Integer" parameterType="java.lang.String">-->
+<!--        SELECT count(`driver_id`)  FROM `v_city_driver_user_work_status`-->
+<!--        WHERE `city_code` = #{cityCode};-->
+<!--    </select>-->
+
+    <select id="getStatusByCarId" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT t3.work_status FROM car t1
+        JOIN driver_car_binding_relationship t2 ON t1.id = t2.car_id
+        RIGHT JOIN driver_user_work_status t3 ON t2.driver_id = t3.driver_id
+        WHERE t1.id = #{carId};
+    </select>
+</mapper>

@@ -25,6 +25,11 @@ public class CarServiceImpl implements CarService {
 	private ServiceMapClient serviceMapClient;
 	
 	
+	/**
+	 * 添加车辆并创建终端 desc=carId
+	 * @param car
+	 * @return
+	 */
 	@Override
 	public ResponseResult addCar(Car car) {
 		LocalDateTime now = LocalDateTime.now();

@@ -23,6 +23,8 @@ import java.time.LocalDateTime;
 @Service
 public class DriverUserWorkStatusServiceImpl extends ServiceImpl<DriverUserWorkStatusMapper, DriverUserWorkStatus> implements IDriverUserWorkStatusService {
 	
+	@Resource
+	private DriverUserWorkStatusMapper driverUserWorkStatusMapper;
 	
 	@Override
 	public ResponseResult changeWorkStatus(DriverUserWorkStatus driverUserWorkStatus) {
@@ -47,5 +49,15 @@ public class DriverUserWorkStatusServiceImpl extends ServiceImpl<DriverUserWorkS
 		this.save(driverUserWorkStatus);
 		
 		return ResponseResult.success();
+	}
+	
+	@Override
+	public ResponseResult<Boolean> getStatusByCarId(String carId) {
+		// TODO 通过CarId拿到DriverId再获取WorkStatus(多表) 未做
+		Integer workStatus = driverUserWorkStatusMapper.getStatusByCarId(carId);
+		if (workStatus == null || workStatus != 1) {
+			return ResponseResult.success(false);
+		}
+		return ResponseResult.success(true);
 	}
 }

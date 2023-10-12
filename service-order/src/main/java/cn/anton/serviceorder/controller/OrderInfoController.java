@@ -2,6 +2,7 @@ package cn.anton.serviceorder.controller;
 
 import cn.anton.internalcommon.constant.CommonStatusEnum;
 import cn.anton.internalcommon.constant.HeaderParamConstant;
+import cn.anton.internalcommon.dao.OrderInfo;
 import cn.anton.internalcommon.dao.ResponseResult;
 import cn.anton.internalcommon.request.OrderRequest;
 import cn.anton.serviceorder.service.OrderInfoService;
@@ -20,6 +21,21 @@ public class OrderInfoController {
 	
 	@Resource
 	private OrderInfoService orderInfoService;
+	
+	@PostMapping("/test")
+	public ResponseResult test(@RequestBody OrderRequest orderRequest){
+		String depLatitude = orderRequest.getDepLatitude();
+		String depLongitude = orderRequest.getDepLongitude();
+		
+		OrderInfo orderInfo = new OrderInfo();
+		orderInfo.setDepLatitude(depLatitude);
+		orderInfo.setDepLongitude(depLongitude);
+		
+		orderInfoService.dispatchRealTimeOrder(orderInfo);
+		
+		return ResponseResult.success();
+	}
+	
 	
 	@PostMapping("/add")
 	public ResponseResult add(@RequestBody OrderRequest orderRequest, HttpServletRequest httpServletRequest) {

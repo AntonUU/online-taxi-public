@@ -6,6 +6,8 @@ package cn.anton.internalcommon.constant;
  */
 public class DriverCarStatusConstant {
 	
+	public static final Integer DRIVER_CAR_BIND = 1;
+	
 	/**
 	 * 收车状态
 	 */

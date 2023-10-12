@@ -56,6 +56,8 @@ public class TerminalClient {
 		sb.append("&center=").append(aroundsearchRequest.getCenter());
 		sb.append("&radius=").append(aroundsearchRequest.getRadius());
 		
+		log.info("周边搜索URL: {}", sb.toString());
+		
 		ResponseEntity<String> postForEntity = restTemplate.postForEntity(sb.toString(), null, String.class);
 		String body = postForEntity.getBody();
 		System.out.println("周边搜索API返回值: " + body);
@@ -66,14 +68,24 @@ public class TerminalClient {
 		JSONArray results = data.getJSONArray("results");
 		for (int i = 0; i < results.size(); i++) {
 			JSONObject item = results.getJSONObject(i);
+			// carId
 			String carId = item.getString("desc");
 			String tid = item.getString("tid");
+			JSONObject location = item.getJSONObject("location");
+			// 纬度
+			String latitude = location.getString("latitude");
+			// 经度
+			String longitude = location.getString("longitude");
+			
 			TerminalResponse terminalResponse = new TerminalResponse();
 			terminalResponse.setTid(tid);
 			terminalResponse.setCarId(carId);
+			terminalResponse.setLatitude(latitude);
+			terminalResponse.setLongitude(longitude);
+			log.info("查询到的终端信息: {}", terminalResponse);
 			responseList.add(terminalResponse);
 		}
-		
+		// TODO 将搜索到的终端返回
 		return ResponseResult.success(responseList);
 	}
 }

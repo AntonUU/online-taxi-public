@@ -2,6 +2,7 @@ package cn.anton.servicedriveruser.controller;
 
 import cn.anton.internalcommon.dao.DriverUser;
 import cn.anton.internalcommon.dao.ResponseResult;
+import cn.anton.internalcommon.response.OrderDriverResponse;
 import cn.anton.servicedriveruser.mapper.DriverUserMapper;
 import cn.anton.servicedriveruser.service.DriverUserService;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,9 @@ public class DriverUserController {
 	
 	@Resource
 	private DriverUserService driverUserService;
+	
+	@Resource
+	private DriverUserMapper driverUserMapper;
 	
 	/**
 	 * 添加司机信息, ID必须为空
@@ -40,13 +44,6 @@ public class DriverUserController {
 		return driverUserService.updateDriver(driverUser);
 	}
 	
-	@RequestMapping("/test")
-	public ResponseResult testController() {
-//		DriverUser driverUser = driverUserMapper.selectById(1);
-//		return ResponseResult.success(driverUser);
-		return ResponseResult.success();
-	}
-	
 	@GetMapping("/check-driver/{driverPhone}")
 	public ResponseResult checkDriverByDriverPhone(@PathVariable String driverPhone){
 		return driverUserService.checkDriverByDriverPhone(driverPhone);
@@ -55,6 +52,17 @@ public class DriverUserController {
 	@PostMapping("/find-driver/{driverPhone}")
 	public ResponseResult findDriverByPhone(@PathVariable String driverPhone){
 		return driverUserService.findDriverByPhone(driverPhone);
+	}
+	
+	/**
+	 * 根据车辆Id查询订单需要的司机信息
+	 * @param carId
+	 * @return
+	 */
+	@GetMapping("/get-available-driver/{carId}")
+	public ResponseResult<OrderDriverResponse> getAvailableDriver(@PathVariable("carId") String carId){
+		
+		return driverUserService.getAvailableDriver(carId);
 	}
 	
 }

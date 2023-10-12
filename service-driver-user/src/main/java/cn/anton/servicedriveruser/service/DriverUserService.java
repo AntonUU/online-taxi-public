@@ -2,6 +2,7 @@ package cn.anton.servicedriveruser.service;
 
 import cn.anton.internalcommon.dao.DriverUser;
 import cn.anton.internalcommon.dao.ResponseResult;
+import cn.anton.internalcommon.response.OrderDriverResponse;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /*
@@ -39,4 +40,13 @@ public interface DriverUserService {
 	 * @return
 	 */
 	ResponseResult findDriverByPhone(String driverPhone);
+	
+	/**
+	 * 根据carId查询可以派单的司机信息
+	 */
+	ResponseResult<OrderDriverResponse> getAvailableDriver(String carId);
+	
+	
+	
+	
 }

@@ -34,4 +34,14 @@ public class DriverUserWorkStatusController {
 		return driverUserWorkStatusServiceImpl.addWorkStatus(driverUserWorkStatus);
 	}
 	
+	/**
+	 * 通过车辆Id获取司机工作状态
+	 * @param carId 车辆Id
+	 * @return Boolean
+	 */
+	@PostMapping("/get-driver-work-status/{carId}")
+	public ResponseResult getStatusByCarId(@PathVariable String carId){
+		return driverUserWorkStatusServiceImpl.getStatusByCarId(carId);
+	}
+	
 }

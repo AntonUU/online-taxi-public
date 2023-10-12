@@ -17,4 +17,10 @@ public interface OrderInfoService extends IService<OrderInfo> {
 
 	public ResponseResult add(OrderRequest orderRequest);
 	
+	/**
+	 * 派单
+	 * @param orderInfo
+	 */
+	void dispatchRealTimeOrder(OrderInfo orderInfo);
+	
 }

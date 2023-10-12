@@ -1,0 +1,23 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.anton.servicedriveruser.mapper.DriverUserMapper">
+    <select id="selectCityDriverUserByCityCode" resultType="java.lang.Integer" parameterType="java.lang.String">
+        SELECT count(`driver_id`)  FROM `v_city_driver_user_work_status`
+        WHERE `city_code` = #{cityCode};
+    </select>
+
+        <!--  该方式已被弃用  -->
+<!--    <parameterMap id="a" type="cn.anton.internalcommon.select.DriverCarSelect">-->
+<!--        <parameter property="carId" javaType="java.lang.String" jdbcType=""-->
+<!--    </parameterMap>-->
+
+    <select id="getAvailableDriver"  parameterType="cn.anton.internalcommon.select.DriverCarSelect" resultType="cn.anton.internalcommon.response.OrderDriverResponse">
+        SELECT t1.id carId, t3.id driverId, t3.driver_phone driverPhone, t4.work_status workStatus, t1.vehicle_no vehicleOn, t3.license_photo_id licenseId FROM car t1
+        JOIN driver_car_binding_relationship t2 ON t1.id = t2.car_id
+        RIGHT JOIN driver_user t3 ON t2.driver_id = t3.id
+        RIGHT JOIN driver_user_work_status t4 ON t4.driver_id = t3.id
+        WHERE t1.id = #{carId} AND t2.state = #{bindStatus} AND t4.work_status = #{workStatus};
+    </select>
+
+</mapper>

@@ -27,4 +27,6 @@ public interface IDriverUserWorkStatusService extends IService<DriverUserWorkSta
 	 * @return
 	 */
 	ResponseResult addWorkStatus(DriverUserWorkStatus driverUserWorkStatus);
+	
+	ResponseResult<Boolean> getStatusByCarId(String carId);
 }
